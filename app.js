@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const rutas = require('./src/router/mainRouter');
+const rutas = require('./src/routes/index.routes.js');
 const port = process.env.PORT || 8000;
 
 app.use(express.static('public'));
