@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ingresar Token</title>
+  </head>
+  <body>
+    <form id="tokenForm">
+      <input type="text" id="token" placeholder="Ingrese su token" required />
+      <button type="submit">Ingresar</button>
+    </form>
+    <script>
+      document.getElementById("tokenForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const token = document.getElementById("token").value;
+        localStorage.setItem("token", token);
+        window.location.href = "/espacios";
+      });
+    </script>
+  </body>
+</html>

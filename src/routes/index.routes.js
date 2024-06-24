@@ -2,28 +2,27 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 const mainController = require("../controllers/mainControllers");
-
-router.get("/api/obtenerTipoEvento", mainController.obtenerTipoEvento);
+const verifyToken = require("../middleware/authMiddleware");
 
 // Rutas para mostrar las vistas
-router.get("/espacios", mainController.obtenerEspacios);
-router.get("/espacios/crear", mainController.mostrarFormularioEditar);
-router.post("/espacios", mainController.crearEspacio);
-
-//router.get("/espacios/crear", mainController.mostrarFormularioCrear);
-router.get("/espacios/editar/:id", mainController.mostrarFormularioEditar);
-/*
-// Rutas para API
-router.get("/espacios/:id", mainController.obtenerEspacioPorId);
-router.post("/espacios", mainController.crearEspacio);
-router.put("/espacios/:id", mainController.actualizarEspacio);
-router.delete("/espacios/:id", mainController.eliminarEspacio);
-*/
-router.put("/espacios/:id", mainController.actualizarEspacio);
-router.post("/espacios", mainController.crearEspacio);
-router.delete("/espacios/:id", mainController.eliminarEspacio);
+router.get("/espacios", verifyToken, mainController.obtenerEspacios);
+router.get(
+  "/espacios/crear",
+  verifyToken,
+  mainController.mostrarFormularioEditar
+);
+router.post("/espacios", verifyToken, mainController.crearEspacio);
+router.get(
+  "/espacios/editar/:id",
+  verifyToken,
+  mainController.mostrarFormularioEditar
+);
+router.put("/espacios/:id", verifyToken, mainController.actualizarEspacio);
+router.post("/espacios", verifyToken, mainController.crearEspacio);
+router.delete("/espacios/:id", verifyToken, mainController.eliminarEspacio);
 
 router.post("/api/crearContacto", mainController.crearContacto);
+router.get("/api/obtenerTipoEvento", mainController.obtenerTipoEvento);
 
 router.get("/contacto", (req, res) => {
   res.sendFile(path.resolve(__dirname + `./../../public/contacto.html`));
@@ -37,6 +36,9 @@ router.get("/eventos", (req, res) => {
   res.sendFile(path.resolve(__dirname + `./../../public/eventos.html`));
 });
 
+router.get("/login", (req, res) => {
+  res.sendFile(path.resolve(__dirname + `./../../public/login.html`));
+});
 router.use((req, res, next) => {
   res
     .status(400)

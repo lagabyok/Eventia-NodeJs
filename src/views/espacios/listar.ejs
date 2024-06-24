@@ -82,5 +82,36 @@
         <% }) %>
       </tbody>
     </table>
+
+    <script>
+      const token = localStorage.getItem("token");
+      console.log("Token obtenido de localStorage:", token); // Añadir log
+
+      if (!token) {
+        alert("No tienes acceso a esta página. Ingrese un token primero.");
+        window.location.href = "/";
+      }
+
+      fetch("/espacios", {
+        headers: {
+          Authorization: token,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            alert("Token inválido. Ingrese un token válido.");
+            window.location.href = "/";
+          } else {
+            return response.text();
+          }
+        })
+        .then((data) => {
+          console.log("Respuesta recibida:", data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("Hubo un problema con la solicitud. Intente nuevamente.");
+        });
+    </script>
   </body>
 </html>
