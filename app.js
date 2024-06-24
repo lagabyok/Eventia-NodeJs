@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-const rutas = require("./src/routes/index.routes.js");
+const indexRouter = require("./src/routes/index.routes.js");
 const methodOverride = require("method-override");
 
 const app = express();
@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(methodOverride("_method"));
 
-app.use("/", rutas);
+app.use("/", indexRouter);
 
 app.listen(port, () => {
   console.log(`Servidor arriba en el puerto http://localhost:${port}`);
