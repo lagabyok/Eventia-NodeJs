@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= tituloDePagina %></title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+      }
+      .btn {
+        padding: 5px 10px;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .btn-edit {
+        background-color: #4caf50;
+      }
+      .btn-delete {
+        background-color: #f44336;
+      }
+      .btn-create {
+        background-color: #008cba;
+      }
+    </style>
+  </head>
+  <body>
+    <h2><%= tituloDePagina %></h2>
+    <a href="/espacios/crear" class="btn btn-create">Crear Nuevo Espacio</a>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Capacidad</th>
+          <th>Evento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% espacios.forEach(espacio => { %>
+        <tr>
+          <td><%= espacio.id %></td>
+          <td><%= espacio.nombre %></td>
+          <td><%= espacio.direccion %></td>
+          <td><%= espacio.capacidad %> personas</td>
+          <td><%= espacio.evento %></td>
+          <td class="action-buttons">
+            <a href="/espacios/editar/<%= espacio.id %>" class="btn btn-edit"
+              >Editar</a
+            >
+            <form
+              action="/espacios/<%= espacio.id %>?_method=DELETE"
+              method="post"
+              style="display: inline"
+            >
+              <button type="submit" class="btn btn-delete">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </body>
+</html>

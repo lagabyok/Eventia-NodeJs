@@ -187,3 +187,20 @@ function validateForm() {
   // Si todas las validaciones pasan, enviar el formulario
   return true;
 }
+
+// Función para cargar los tipos de eventos desde la API
+async function cargarTiposEventos() {
+  const response = await fetch("http://localhost:3000/api/obtenerTipoEvento");
+  const data = await response.json();
+
+  const selectTipo = document.getElementById("tipo");
+
+  data.forEach((tipo) => {
+    const option = document.createElement("option");
+    option.value = tipo.id;
+    option.textContent = tipo.nombre;
+    selectTipo.appendChild(option);
+  });
+}
+
+cargarTiposEventos();

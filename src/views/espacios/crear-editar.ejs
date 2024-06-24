@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= tituloDePagina %></title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      font-size: 16px; /* Tamaño de fuente */
+      border: 1px solid #ccc; /* Borde del select */
+      border-radius: 4px; /* Bordes redondeados */
+    }
+    option {
+      padding: 8px;
+    }
+    button {
+      padding: 10px 15px;
+      margin-top: 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-cancel {
+      background-color: #f44336;
+    }
+  </style>
+</head>
+<body>
+  <h2><%= tituloDePagina %></h2>
+  <form action="<%= action %>" method="post">
+    <input type="hidden" name="id" value="<%= espacio.id || '' %>" />
+    <label for="nombre">Nombre:</label>
+    <input
+      type="text"
+      id="nombre"
+      name="nombre"
+      value="<%= espacio.nombre || '' %>"
+      required
+    />
+    <label for="direccion">Dirección:</label>
+    <input
+      type="text"
+      id="direccion"
+      name="direccion"
+      value="<%= espacio.direccion || '' %>"
+      required
+    />
+    <label for="capacidad">Capacidad:</label>
+    <input
+      type="number"
+      id="capacidad"
+      name="capacidad"
+      value="<%= espacio.capacidad || '' %>"
+      required
+    />
+    <label for="evento_id">ID del Evento:</label>
+    <select id="evento_id" name="evento_id" required>
+      <% tipoEventos.forEach(evento => { %>
+        <option value="<%= evento.id %>" <%= espacio.evento_id == evento.id ? 'selected' : '' %>><%= evento.nombre %></option>
+      <% }) %>
+    </select>
+    <button type="submit"><%= buttonText %></button>
+    <button
+      type="button"
+      class="btn-cancel"
+      onclick="window.location.href='/espacios'"
+    >
+      Cancelar
+    </button>
+  </form>
+</body>
+</html>
