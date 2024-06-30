@@ -1,1 +1,2 @@
 Para inicializar el servidor: npm start
+JWT_SECRET=aa240c89996108a2600f49f5a3c479bbf3dc47858935537de938027f57b44e26 arch .ENV EN DIRECTORIO RAIZ 
