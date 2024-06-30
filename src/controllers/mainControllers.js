@@ -93,43 +93,46 @@ from eventos e, espacios esp where e.tipo_evento_id =esp.evento_id`;
   },
 */
 
-  crearEspacio: async (req, res) => {
-    try {
-      const { nombre, direccion, capacidad, evento_id } = req.body;
-      const sql = `INSERT INTO espacios (nombre, direccion, capacidad, evento_id) VALUES (?, ?, ?, ?)`;
-      const [resultado, fields] = await conn.query(sql, [
-        nombre,
-        direccion,
-        capacidad,
-        evento_id,
-      ]);
-      console.log(resultado);
+crearEspacio: async (req, res) => {
+  try {
+    const { nombre, direccion, capacidad, evento_id } = req.body;
+    const sql = `INSERT INTO espacios (nombre, direccion, capacidad, evento_id) VALUES (?, ?, ?, ?)`;
+    const [resultado, fields] = await conn.query(sql, [
+      nombre,
+      direccion,
+      capacidad,
+      evento_id,
+    ]);
+    console.log(resultado);
 
-      if (resultado && resultado.affectedRows > 0) {
-        res.redirect(`/espacios/editar/${resultado.insertId}`);
-      } else {
-        res.status(500).json({ error: "Error al crear el espacio" });
-      }
-    } catch (error) {
-      console.error("Error al crear el espacio:", error);
-      res.status(500).json({ error: "Error interno del servidor" });
+    if (resultado && resultado.affectedRows > 0) {
+      // Redirigir a la página de edición del nuevo espacio creado
+      res.redirect(`/espacios/editar/${resultado.insertId}`);
+    } else {
+      res.status(500).json({ error: "Error al crear el espacio" });
     }
-  },
+  } catch (error) {
+    console.error("Error al crear el espacio:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+},
 
-  actualizarEspacio: async (req, res) => {
-    try {
-      const { nombre, direccion, capacidad, evento_id } = req.body;
-      console.log(req.body);
-      await conn.query(
-        "UPDATE espacios SET nombre = ?, direccion = ?, capacidad = ?, evento_id= ? WHERE id = ?",
-        [nombre, direccion, capacidad, evento_id, req.params.id]
-      );
-      res.redirect("/espacios");
-    } catch (error) {
-      console.error("Error al actualizar el espacio:", error);
-      res.status(500).json({ error: "Error interno del servidor" });
-    }
-  },
+
+actualizarEspacio: async (req, res) => {
+  try {
+    const { nombre, direccion, capacidad, evento_id } = req.body;
+    await conn.query(
+      "UPDATE espacios SET nombre = ?, direccion = ?, capacidad = ?, evento_id = ? WHERE id = ?",
+      [nombre, direccion, capacidad, evento_id, req.params.id]
+    );
+    // Redirigir de vuelta al listado de espacios después de actualizar
+    res.redirect("/espacios");
+  } catch (error) {
+    console.error("Error al actualizar el espacio:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+},
+
 
   eliminarEspacio: async (req, res) => {
     try {
