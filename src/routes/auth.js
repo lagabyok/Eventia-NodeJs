@@ -1,7 +1,7 @@
 const express = require('express');
-const router = express.Router();
 const jwt = require('jsonwebtoken');
 const sqlite3 = require('sqlite3').verbose();
+const router = express.Router();
 const path = require('path');
 require('dotenv').config();
 
@@ -44,8 +44,7 @@ router.post('/login', (req, res) => {
     if (row) {
       const token = generarJWT(row.usuario);
       console.log('Usuario autenticado:', row.usuario);
-      res.json({ token, redirectUrl: '/espacios' });
-      console.log ('token almacenado ');
+      res.json({ token });
     } else {
       console.log('Usuario o contraseña incorrectos');
       res.status(401).json({ error: 'Usuario o contraseña incorrectos' });

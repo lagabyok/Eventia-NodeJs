@@ -6,54 +6,43 @@
   <title>Espacios</title>
 </head>
 <body>
-  <div id="listado"></div>
+  <div class="container">
+    <h2>Espacios</h2>
+    <!-- Aquí puedes mostrar los datos obtenidos -->
+    <div id="espaciosData"></div>
+  </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async function() {
-      // Recuperar el token de localStorage
+    document.addEventListener('DOMContentLoaded', async function () {
       const token = localStorage.getItem('jwt_token');
-      console.log('Token recuperado de localStorage:', token);
 
-      // Verificar si hay un token de autenticación
       if (!token) {
-        alert("No tienes acceso a esta página. Ingrese un token primero.");
-        window.location.href = "/login.html";
+        alert('No estás autorizado. Por favor, inicia sesión.');
+        window.location.href = '/espacios'; // Redirigir a la página de login si no hay token
         return;
       }
 
       try {
-        const res = await fetch("http://localhost:3000/espacios", {
+        const response = await fetch('http://localhost:3000/espacios', {
           method: 'GET',
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
           }
         });
+        console.log('Token enviado:', token);
 
-        if (!res.ok) {
-          throw new Error("Token inválido. Ingrese un token válido.");
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Datos de espacios:', data);
+          document.getElementById('espaciosData').textContent = JSON.stringify(data, null, 2); // Muestra los datos en el div
+        } else {
+          alert('Error al obtener los espacios');
         }
-
-        const datos = await res.json();
-        const listaHTML = document.querySelector("#listado");
-        listaHTML.innerHTML = '';
-
-        datos.forEach(registro => {
-          listaHTML.innerHTML += `
-            <form method="POST" action="/espacios/${registro.id}?_method=DELETE" style="display:flex">
-              <h4>${registro.nombre}</h4>
-              <h4>${registro.direccion}</h4>
-              <h4>${registro.capacidad}</h4>
-              <input type="hidden" name="idEliminar" value="${registro.id}">
-              <h4><button><a href="/espacios/editar/${registro.id}">Modificar</a></button></h4>
-              <h4><input type="submit" value="Eliminar"></h4>
-            </form>
-          `;
-        });
       } catch (error) {
-        console.error("Error:", error);
-        alert(error.message);
-        window.location.href = "/login.html";
+        console.error('Error al realizar la solicitud:', error);
+        alert('Error interno al realizar la solicitud');
       }
     });
   </script>
